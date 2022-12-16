@@ -22,54 +22,10 @@ void pSort::init()
 }
 
 
-/*const int MINCOUNT = 10;
-const int MAXCOUNT = 200000;
-
-inline int randomCount() { return MINCOUNT + rand() % (MAXCOUNT - MINCOUNT + 1); }
-char randomChar() {
-
-	std::string str = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-	int pos = rand() % str.size();
-	return str[pos];
-}
-
-pSort::dataType* generate(long num_of_records)
-{
-	//Creating an array of structure of type "dataType" declared in sort.h
- 
-	int arr[23] = { 5,2,1,7,0,9,4,15,16,10,3,12,31,22,34,35,23,26,17,20,21,66,18 };
-
-	pSort::dataType* data = new pSort::dataType[num_of_records];
-
-	//srand(time(0));
-	for (int i = 0; i < num_of_records; i++) {
-		data[i].key = rand(); //arr[i % 23];  //rand(); // arr[i % 23];  //rand();     
-		for (int j = 0; j < 4; j++) data[i].payload[j] = randomChar();
-		//printf("(%d: %d %c%c%c%c) ", i, data[i].key, data[i].payload[0], data[i].payload[1], data[i].payload[2], data[i].payload[3]);
-	}
-
-	return data;
-}
-*/
-
 void pSort::sort(pSort::dataType* rbuf, int l, pSort::SortType type)
 {
-	
-	//long l = 20000000;  //10000000;
-	//int c = (int)(l / size);			//count of array elements to be sent to each process
-	//int rem = (int)(l % size);			//number of processes to send count+1 elements
-	//pSort::dataType* rbuf = generate(l);
-
-	
-	/*for (int i = 0; i < l; i++) {
-		printf("(%d: %d %c%c%c%c) \n", i, rbuf[i].key, rbuf[i].payload[0], rbuf[i].payload[1], rbuf[i].payload[2], rbuf[i].payload[3]);
-	}*/
-	
-
 	omp_set_dynamic(0);
 	omp_set_num_threads(size);
-	//std::cout << " threads are " << omp_get_num_threads();
-
 	if (type == 1 || type == 0)
 	{
 #pragma omp parallel //firstprivate(rank)
@@ -96,13 +52,6 @@ void pSort::sort(pSort::dataType* rbuf, int l, pSort::SortType type)
 		RADIx(rbuf, l);
 	}
 
-
-	/*std::cout<<" back "<< std::endl;
-	for (int i = 0; i < l; i++)
-	{
-		printf("(%d: %d %c%c%c%c) \n", i, rbuf[i].key, rbuf[i].payload[0], rbuf[i].payload[1], rbuf[i].payload[2], rbuf[i].payload[3]);
-	}
-	//std::cout << " bie c ya";*/
 }
 
 
@@ -285,7 +234,6 @@ void MERGe(pSort::dataType* rbuf, int len)
 
 #pragma omp task untied
 			{
-				//std::cout << " i am " << omp_get_thread_num() << std::endl;
 				MERGe(left, len / 2);
 			}
 #pragma omp task untied
